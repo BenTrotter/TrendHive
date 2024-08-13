@@ -2,4 +2,4 @@
 *.log
 
 # Ignore environment files
-.TrendHive_env
+.TrendHive_venv
