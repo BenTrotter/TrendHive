@@ -1,0 +1,2 @@
+# TrendHive
+TrendHive repository
