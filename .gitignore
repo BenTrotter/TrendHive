@@ -2,4 +2,6 @@
 *.log
 
 # Ignore environment files
-.TrendHive_venv
+TrendHive_venv/
+
+.DS_Store
