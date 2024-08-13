@@ -1,0 +1,5 @@
+# Ignore log files
+*.log
+
+# Ignore environment files
+.TrendHive_env
