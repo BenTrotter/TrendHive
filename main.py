@@ -13,7 +13,7 @@ import sys
 import re
 import os
 
-my_api_key = os.getenv("CHAT_GPT_API_KEY")
+MY_API_KEY = os.getenv("CHAT_GPT_API_KEY")
 
 def initiate_driver():
     chrome_options = Options()
@@ -35,7 +35,7 @@ def enter_text(driver, xpath, text):
     input_element.send_keys(text)
 
 def callChatGpt():
-    client = OpenAI(api_key = my_api_key)
+    client = OpenAI(api_key = MY_API_KEY)
 
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -52,9 +52,9 @@ def callChatGpt():
 
 def get_url():
     return "https://chatgpt.com"
+
 def get_url(option):
     urls = {
-        "ChatGPT": "https://chatgpt.com",
         "InVideo": "https://invideo.io/make/youtube-video-editor/",
         "Trends": "https://trends.google.com/trends/explore?date=now%207-d&gprop=youtube&hl=en"
     }
@@ -68,14 +68,10 @@ def wait_click(driver, xpath):
 
 def main():
     callChatGpt()
-    # chrome_options = Options()
-    # chrome_options.add_argument("--disable-popup-blocking")
-    # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-    # open_page(driver)
     driver = None
     try:
         driver = initiate_driver()
-        open_page(driver, "ChatGPT")
+        open_page(driver, "Trends")
 
         time.sleep(20)
     except Exception as error:
