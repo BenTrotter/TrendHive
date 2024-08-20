@@ -6,14 +6,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-import openai
+from openai import OpenAI
 from datetime import datetime, timedelta
 import time
 import sys
 import re
 import os
 
-openai.my_api_key = os.getenv("CHAT_GPT_API_KEY")
+my_api_key = os.getenv("CHAT_GPT_API_KEY")
 
 def open_page(driver):
     url = get_url()
@@ -28,6 +28,22 @@ def enter_text(driver, xpath, text):
     input_element.clear()
     input_element.send_keys(text)
 
+def callChatGpt():
+    client = OpenAI(api_key = my_api_key)
+
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": "Tell me a 6 word joke"
+            }
+        ]
+    )
+    print(completion.choices[0].message.content)
+    return completion.choices[0].message.content
+
 def get_url():
     return "https://chatgpt.com"
 
@@ -39,10 +55,11 @@ def wait_click(driver, xpath):
 
 
 def main():
-    chrome_options = Options()
-    chrome_options.add_argument("--disable-popup-blocking")
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-    open_page(driver)
+    callChatGpt()
+    # chrome_options = Options()
+    # chrome_options.add_argument("--disable-popup-blocking")
+    # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+    # open_page(driver)
 
 if __name__ == "__main__":
     main()
