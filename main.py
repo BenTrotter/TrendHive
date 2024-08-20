@@ -16,12 +16,14 @@ import os
 MY_API_KEY = os.getenv("CHAT_GPT_API_KEY")
 
 def initiate_driver():
+    print("Initiating driver")
     chrome_options = Options()
     chrome_options.add_argument("--disable-popup-blocking")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
     return driver
 
 def open_page(driver, option):
+    print("Accessing URL")
     url = get_url(option)
     driver.get(url)
 
@@ -83,9 +85,15 @@ def wait_click(driver, xpath):
     button.click()
 
 def scrape_trends(driver):
-    # for element in elements
-    #     get text
-    #     append text to list
+    print("Getting trends")
+    span_text_dict = {}
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "item")))
+    elements = driver.find_elements(By.CLASS_NAME, "item")
+    for i in range(min(5, len(elements))):
+        span_text = elements[i].find_element(By.TAG_NAME, 'bidiText').text
+        span_text_dict[f'element_{i+1}'] = span_text
+    print(span_text_dict)
     return 0
 
 def main():
@@ -93,20 +101,15 @@ def main():
     # prompt = get_prompt()
     # call_chat_gpt(prompt)
     # call_chat_gpt()
-    # driver = None
-    # try:
-    #     driver = initiate_driver()
-    #     open_page(driver, "Trends")
-    # callChatGpt()
-    # driver = None
-    # try:
-    #     driver = initiate_driver()
-    #     open_page(driver, "Trends")
-        # scrape_trends(driver)
+    driver = None
+    try:
+        driver = initiate_driver()
+        open_page(driver, "Trends")
+        scrape_trends(driver)
 
-    #     time.sleep(20)
-    # except Exception as error:
-    #     print(error)
+        time.sleep(20)
+    except Exception as error:
+        print(error)
 
 if __name__ == "__main__":
     main()
