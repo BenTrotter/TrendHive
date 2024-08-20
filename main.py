@@ -72,7 +72,7 @@ def get_url():
 def get_url(option):
     urls = {
         "InVideo": "https://invideo.io/make/youtube-video-editor/",
-        "Trends": "https://trends.google.com/trends/explore?date=now%207-d&gprop=youtube&hl=en"
+        "Trends": "https://trends.google.com/trends/explore?cat=174&date=now%207-d&gprop=youtube&hl=en"
     }
     url = urls.get(option)
     return url
@@ -81,6 +81,12 @@ def wait_click(driver, xpath):
     wait = WebDriverWait(driver, 10)
     button = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
     button.click()
+
+def scrape_trends(driver):
+    # for element in elements
+    #     get text
+    #     append text to list
+    return 0
 
 def main():
     print("Main")
@@ -91,6 +97,12 @@ def main():
     # try:
     #     driver = initiate_driver()
     #     open_page(driver, "Trends")
+    # callChatGpt()
+    # driver = None
+    # try:
+    #     driver = initiate_driver()
+    #     open_page(driver, "Trends")
+        # scrape_trends(driver)
 
     #     time.sleep(20)
     # except Exception as error:
