@@ -1,0 +1,28 @@
+Get topic from google trends
+    Explore -> Category -> Science -> Last 7 Days -> Worldwide -> Top Search 'Rising'
+
+Copy term
+
+Paste term into Chat GPT into promt template:
+
+I want you to act as a youtube content creator, creating videos on a broad range of 
+topics relating to science and technology. I will send you a key word that will be a 
+recently searched trend on youtube. I want you to find out why this is trending on the 
+web (so that your information is up to date) and then find out about the trend. Use what 
+you find about the trend to write a script for a 2 minute video. The video should be 
+informative, entertaining, catch people's attention by spiking curiosity. Please start 
+with a clickbait title for this video, and then provide the script. Your output should 
+be a title introduced "Title: (YOUR TITLE)", and the script only, no sources. Your topic today is:
+
+Copy response into Invideo with prompt:
+
+I want you to act as a youtube content creator, creating videos on a broad range of topics 
+relating to science and technology. I will send you a title and script for a video. The 
+video should be informative, entertaining, catch people's attention by spiking curiosity. 
+Please narrate the video in a southern american accent with a deep voice. Here is the 
+title and script: 
+
+Select default video generation settings
+
+Generate video
+
