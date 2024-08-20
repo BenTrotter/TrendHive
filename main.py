@@ -1,20 +1,19 @@
+
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.keys import Keys
 from datetime import datetime, timedelta
-from selenium.common.exceptions import TimeoutException
 import time
 import sys
 import re
 
 
-def open_page(driver, date):
-    url = get_url(date)
+def open_page(driver):
+    url = get_url()
     driver.get(url)
 
 def login(driver):
@@ -26,9 +25,8 @@ def enter_text(driver, xpath, text):
     input_element.clear()
     input_element.send_keys(text)
 
-def get_url(date):
-    url = ""
-    return url
+def get_url():
+    return "https://chatgpt.com"
 
 def wait_click(driver, xpath):
     wait = WebDriverWait(driver, 10)
@@ -41,6 +39,7 @@ def main():
     chrome_options = Options()
     chrome_options.add_argument("--disable-popup-blocking")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+    open_page(driver)
 
 if __name__ == "__main__":
     main()
