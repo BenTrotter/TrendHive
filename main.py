@@ -36,9 +36,9 @@ def enter_text(driver, xpath, text):
 
 def get_url(option):
     urls = {
-        1: "https://chatgpt.com",
-        2: "https://invideo.io/make/youtube-video-editor/",
-        3: "https://trends.google.com/trends/explore?date=now%207-d&gprop=youtube&hl=en"
+        "ChatGPT": "https://chatgpt.com",
+        "InVideo": "https://invideo.io/make/youtube-video-editor/",
+        "Trends": "https://trends.google.com/trends/explore?date=now%207-d&gprop=youtube&hl=en"
     }
     url = urls.get(option)
     return url
@@ -52,7 +52,7 @@ def main():
     driver = None
     try:
         driver = initiate_driver()
-        open_page(driver, 1)
+        open_page(driver, "ChatGPT")
 
         time.sleep(20)
     except Exception as error:
