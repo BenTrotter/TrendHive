@@ -15,8 +15,14 @@ import os
 
 openai.my_api_key = os.getenv("CHAT_GPT_API_KEY")
 
-def open_page(driver):
-    url = get_url()
+def initiate_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-popup-blocking")
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+    return driver
+
+def open_page(driver, option):
+    url = get_url(option)
     driver.get(url)
 
 def login(driver):
@@ -28,21 +34,29 @@ def enter_text(driver, xpath, text):
     input_element.clear()
     input_element.send_keys(text)
 
-def get_url():
-    return "https://chatgpt.com"
+def get_url(option):
+    urls = {
+        1: "https://chatgpt.com",
+        2: "https://invideo.io/make/youtube-video-editor/",
+        3: "https://trends.google.com/trends/explore?date=now%207-d&gprop=youtube&hl=en"
+    }
+    url = urls.get(option)
+    return url
 
 def wait_click(driver, xpath):
     wait = WebDriverWait(driver, 10)
     button = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
     button.click()
 
-
-
 def main():
-    chrome_options = Options()
-    chrome_options.add_argument("--disable-popup-blocking")
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-    open_page(driver)
+    driver = None
+    try:
+        driver = initiate_driver()
+        open_page(driver, 1)
+
+        time.sleep(20)
+    except Exception as error:
+        print(error)
 
 if __name__ == "__main__":
     main()
