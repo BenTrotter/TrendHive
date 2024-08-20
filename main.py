@@ -6,11 +6,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+import openai
 from datetime import datetime, timedelta
 import time
 import sys
 import re
+import os
 
+openai.my_api_key = os.getenv("CHAT_GPT_API_KEY")
 
 def open_page(driver):
     url = get_url()

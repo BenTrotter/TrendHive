@@ -5,3 +5,5 @@
 TrendHive_venv/
 
 .DS_Store
+
+.env
