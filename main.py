@@ -34,16 +34,32 @@ def enter_text(driver, xpath, text):
     input_element.clear()
     input_element.send_keys(text)
 
-def callChatGpt():
+def get_prompt():
+    topic = input("Please enter your topic: ")
+    prompt = (
+        f"I want you to act as a YouTube content creator, creating videos on a broad range of "
+        f"topics relating to science and technology. I will send you a keyword that will be a "
+        f"recently searched trend on YouTube. I want you to find out why this is trending on the "
+        f"web (so that your information is up to date) and then find out about the trend. Use what "
+        f"you find about the trend to write a script for a 2-minute video. The video should be "
+        f"informative, entertaining, and catch people's attention by spiking curiosity. Please start "
+        f"with a clickbait title for this video, and then provide the script. Your output should "
+        f"be a title introduced with 'Title: (YOUR TITLE)', and the script only, no sources. Your topic today is: {topic}"
+    )
+    print(prompt)
+    return prompt
+    
+
+def call_chat_gpt(prompt):
     client = OpenAI(api_key = MY_API_KEY)
 
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "You are youtube content creator"},
             {
                 "role": "user",
-                "content": "Tell me a 6 word joke"
+                "content": prompt
             }
         ]
     )
@@ -67,15 +83,18 @@ def wait_click(driver, xpath):
     button.click()
 
 def main():
-    callChatGpt()
-    driver = None
-    try:
-        driver = initiate_driver()
-        open_page(driver, "Trends")
+    print("Main")
+    # prompt = get_prompt()
+    # call_chat_gpt(prompt)
+    # call_chat_gpt()
+    # driver = None
+    # try:
+    #     driver = initiate_driver()
+    #     open_page(driver, "Trends")
 
-        time.sleep(20)
-    except Exception as error:
-        print(error)
+    #     time.sleep(20)
+    # except Exception as error:
+    #     print(error)
 
 if __name__ == "__main__":
     main()
