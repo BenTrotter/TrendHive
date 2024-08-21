@@ -7,3 +7,9 @@ TrendHive_venv/
 .DS_Store
 
 .env
+
+client_secret.json
+
+token.json
+
+video.mp4

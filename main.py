@@ -48,7 +48,7 @@ def get_prompt():
         f"you find about the trend to write a script for a 2-minute video. The video should be "
         f"informative, entertaining, and catch people's attention by spiking curiosity. Please start "
         f"with a clickbait title for this video, and then provide the script. Your output should "
-        f"be a title introduced with 'Title: (YOUR TITLE)', and the script only, no sources. Your topic today is: {topic}"
+        f"be a title introduced with 'Title: (YOUR TITLE)', and the script only, no sources, no special characters. Your topic today is: {topic}"
     )
     print(prompt)
     return prompt
@@ -67,7 +67,7 @@ def call_chat_gpt(prompt):
             }
         ]
     )
-    # print(completion.choices[0].message.content)
+    print(completion.choices[0].message.content)
     return completion.choices[0].message.content
 
 def get_url():
@@ -113,6 +113,7 @@ def login_invideo(driver):
 def create_invideo(driver, prompt):
     enter_text(driver, "//textarea[@name='brief']", prompt)
     wait_click(driver, "//div[text()='Generate a video']")
+    time.sleep(30)
     wait_click(driver, "//div[text()='Continue']")
 
 
@@ -120,14 +121,14 @@ def main():
     driver = None
     try:
         driver = initiate_driver()
-        open_page(driver, "Trends")
-        scrape_trends(driver)
+        # open_page(driver, "Trends")
+        # scrape_trends(driver)
         prompt = get_prompt()
         generated_prompt = call_chat_gpt(prompt)
         open_page(driver, "InVideo")
         login_invideo(driver)
         create_invideo(driver, generated_prompt)
-        time.sleep(60*10)
+        time.sleep(60*20)
     except Exception as error:
         print(error)
 
