@@ -14,6 +14,8 @@ import re
 import os
 
 MY_API_KEY = os.getenv("CHAT_GPT_API_KEY")
+INVIDEO_EMAIL = os.getenv("INVIDEO_EMAIL")
+INVIDEO_PASSWORD = os.getenv("INVIDEO_PASSWORD")
 
 def initiate_driver():
     print("Initiating driver")
@@ -65,7 +67,7 @@ def call_chat_gpt(prompt):
             }
         ]
     )
-    print(completion.choices[0].message.content)
+    # print(completion.choices[0].message.content)
     return completion.choices[0].message.content
 
 def get_url():
@@ -96,6 +98,24 @@ def scrape_trends(driver):
     print(span_text_dict)
     return 0
 
+def input_invideo_login_code():
+    login_code = input("Please enter your InVideo login code: ")
+    return login_code
+
+def login_invideo(driver):
+    wait_click(driver, "//button[text()='Login']")
+    enter_text(driver, "//input[@name='email_id']", INVIDEO_EMAIL)
+    wait_click(driver, "//button[text()='Continue with email']")
+    login_code = input_invideo_login_code()
+    enter_text(driver, "//input[@name='code']", login_code)
+    wait_click(driver, "//button[text()='Login']")
+
+def create_invideo(driver, prompt):
+    enter_text(driver, "//textarea[@name='brief']", prompt)
+    wait_click(driver, "//div[text()='Generate a video']")
+    wait_click(driver, "//div[text()='Continue']")
+
+
 def main():
     print("Main")
     # prompt = get_prompt()
@@ -108,6 +128,19 @@ def main():
         scrape_trends(driver)
 
         time.sleep(20)
+    except Exception as error:
+        print(error)
+    driver = None
+    try:
+        prompt = get_prompt()
+        generated_prompt = call_chat_gpt(prompt)
+        driver = initiate_driver()
+        # open_page(driver, "Trends")
+        # scrape_trends(driver)
+        open_page(driver, "InVideo")
+        login_invideo(driver)
+        create_invideo(driver, generated_prompt)
+        time.sleep(60*10)
     except Exception as error:
         print(error)
 
