@@ -117,26 +117,13 @@ def create_invideo(driver, prompt):
 
 
 def main():
-    print("Main")
-    # prompt = get_prompt()
-    # call_chat_gpt(prompt)
-    # call_chat_gpt()
     driver = None
     try:
         driver = initiate_driver()
         open_page(driver, "Trends")
         scrape_trends(driver)
-
-        time.sleep(20)
-    except Exception as error:
-        print(error)
-    driver = None
-    try:
         prompt = get_prompt()
         generated_prompt = call_chat_gpt(prompt)
-        driver = initiate_driver()
-        # open_page(driver, "Trends")
-        # scrape_trends(driver)
         open_page(driver, "InVideo")
         login_invideo(driver)
         create_invideo(driver, generated_prompt)
