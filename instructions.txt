@@ -26,3 +26,11 @@ Select default video generation settings
 
 Generate video
 
+
+1 - We need to remove the sleep times and use wait instead
+2 - We should extract all text prompt to a separate file
+3 - We need to automate the step where we download the video and put it in downloads manually
+4 - We need to incorporate description and tags to chatgpt and youtube
+5 - Implement trends
+
+6 - Optimize content and testing
