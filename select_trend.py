@@ -16,7 +16,7 @@ def get_trends(pytrend):
 def get_input(df):
     while True:  # Keep asking until valid input is received
         try:
-            input_topic = input("Enter the index of the trend you want to select, or type your own topic: ")
+            input_topic = input("\nEnter the index of the trend you want to select, or type your own topic: ")
             if len(input_topic) > 2:  # Consider it as a custom topic
                 return input_topic
             else:  # Assume it's an index
@@ -52,7 +52,6 @@ def limit_unique_strings_to_500(strings):
     total_length = 0
     result = []
     seen = set()  # To track unique strings
-    
     for string in strings:
         if string not in seen and total_length + len(string) <= 500:
             result.append(string)
@@ -60,7 +59,6 @@ def limit_unique_strings_to_500(strings):
             total_length += len(string)
         elif total_length + len(string) > 500:
             break  # Stop if adding this string would exceed the limit
-    
     return result
 
 
