@@ -83,7 +83,7 @@ def login_invideo(driver):
 
 
 def create_invideo_prompt(chatgpt_script):
-    invideo_prompt = "Create a fun and viral Youtube short that is 50 seconds long. Here is the script and title:\n\n"
+    invideo_prompt = "Create a fun and viral Youtube short that is 50 seconds long. Use clean transitions. Here is the script and title:\n\n"
     return invideo_prompt + chatgpt_script
 
 def create_invideo_and_download(driver, prompt):

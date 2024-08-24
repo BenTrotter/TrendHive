@@ -1,6 +1,7 @@
 
 from pytrends.request import TrendReq
 import tabulate
+import re
 
 
 # Get Google Hot Trends data
@@ -44,7 +45,29 @@ def get_keywords(value):
     except Exception as e:
         print(f"An error occurred while fetching keyword suggestions: {e}")
     print(f"\nTags:\n\n{keywords}")
-    return limit_unique_strings_to_500(keywords)
+    limited = limit_unique_strings_to_500(keywords)
+    return clean_youtube_tags(limited)
+
+
+# Ensures tags are in a valid format
+def clean_youtube_tags(tags):
+    cleaned_tags = []
+    for tag in tags:
+        # Strip leading and trailing whitespace
+        tag = tag.strip()
+        # Remove empty tags
+        if not tag:
+            continue
+        # Ensure the tag does not exceed 500 characters
+        if len(tag) > 500:
+            tag = tag[:500]
+        # Remove invalid characters (YouTube allows alphanumeric and some special characters)
+        tag = re.sub(r'[^a-zA-Z0-9\s-_]', '', tag)
+        # Add cleaned tag to the list if it's not already present
+        if tag not in cleaned_tags:
+            cleaned_tags.append(tag)
+
+    return cleaned_tags
 
 
 # Limit keywords length and ensure no duplicates
