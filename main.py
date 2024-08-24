@@ -47,14 +47,14 @@ def enter_text(driver, xpath, text):
 def get_prompt():
     topic = input("\n\nPlease enter your topic: ")
     prompt = (
-        f"I want you to act as a YouTube content creator, creating videos on a broad range of "
-        f"topics relating to science and technology. I will send you a keyword that will be a "
+        f"I want you to act as a YouTube content creator, creating Youtube shorts on a broad range of "
+        f"topics relating to the latest trends. I will send you a keyword that will be a "
         f"recently searched trend on YouTube. I want you to find out why this is trending on the "
         f"web (so that your information is up to date) and then find out about the trend. Use what "
         f"you find about the trend to write a script for a 2-minute video. The video should be "
         f"informative, entertaining, and catch people's attention by spiking curiosity. Please start "
         f"with a clickbait title for this video, and then provide the script. Your output should "
-        f"be a title introduced with 'Title: (YOUR TITLE)', and the script only, no sources, no special characters. Your topic today is: {topic}"
+        f"be a title introduced with 'Title: (YOUR TITLE)', and the script only, no sources, no special characters. No introducing or ending of the channel as the script is for Youtube Shorts Your topic today is: {topic}"
     )
     print("\n\nTHIS IS THE PROMPT\n\n" + prompt + "\n\n")
     return prompt
@@ -177,16 +177,16 @@ def main():
         prompt = get_prompt()
         generated_prompt = call_chat_gpt(prompt)
         title = extract_title(generated_prompt)
-        driver = initiate_driver()
-        open_page(driver, "InVideo")
-        login_invideo(driver)
-        create_invideo(driver, generated_prompt)
-        print("\n\nWe have not implemented downloading yet, please go and download video to your downloads folder once video has been created. The next process will start in 20 minutes.\n\n")
-        time.sleep(60*20) # Waiting for InVideo to generate video, this should be fine tuned / improved by waiting
-        download_invideo() # Currently not implemented, this step will need to be done manually
-        time.sleep(60*2) # Waiting for download
-        rename_and_move_video_from_downloads()
-        upload_to_youtube(title, "descripition")
+        # driver = initiate_driver()
+        # open_page(driver, "InVideo")
+        # login_invideo(driver)
+        # create_invideo(driver, generated_prompt)
+        # print("\n\nWe have not implemented downloading yet, please go and download video to your downloads folder once video has been created. The next process will start in 20 minutes.\n\n")
+        # time.sleep(60*12) # Waiting for InVideo to generate video, this should be fine tuned / improved by waiting
+        # download_invideo() # Currently not implemented, this step will need to be done manually
+        # time.sleep(60*3) # Waiting for download
+        # rename_and_move_video_from_downloads()
+        # upload_to_youtube(title, "descripition")
         
     except Exception as error:
         print(error)
