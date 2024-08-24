@@ -143,16 +143,18 @@ def wait_click_long(driver, xpath):
 
 
 def scrape_trends(driver):
-    print("Getting trends")
-    span_text_dict = {}
-    wait = WebDriverWait(driver, 10)
-    wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "item")))
-    elements = driver.find_elements(By.CLASS_NAME, "item")
-    for i in range(min(5, len(elements))):
-        span_text = elements[i].find_element(By.TAG_NAME, 'bidiText').text
-        span_text_dict[f'element_{i+1}'] = span_text
-    print(span_text_dict)
-    return 0
+    # print("Getting trends")
+    # span_text_dict = {}
+    # wait = WebDriverWait(driver, 10)
+    # wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "item")))
+    # elements = driver.find_elements(By.CLASS_NAME, "item")
+    # for i in range(min(5, len(elements))):
+    #     span_text = elements[i].find_element(By.TAG_NAME, 'bidiText').text
+    #     span_text_dict[f'element_{i+1}'] = span_text
+    # print(span_text_dict)
+    # return 0
+
+    return 
 
 
 def input_invideo_login_code():

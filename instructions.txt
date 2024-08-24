@@ -31,6 +31,6 @@ Generate video
 2 - We should extract all text prompt to a separate file and do a complete refactor
 3 - We need to automate the step where we download the video and put it in downloads manually - DONE
 4 - We need to incorporate description and tags to chatgpt and youtube
-5 - Implement trends
+5 - Implement trends - Joe
 
 6 - Optimize content and testing
