@@ -117,6 +117,8 @@ def main():
         
     except Exception as error:
         print(error)
+        driver.quit()
+    driver.quit()
 
 
 if __name__ == "__main__":
