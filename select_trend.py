@@ -44,9 +44,10 @@ def get_keywords(value):
                     keywords.append(values)
     except Exception as e:
         print(f"An error occurred while fetching keyword suggestions: {e}")
-    print(f"\nTags:\n\n{keywords}")
     limited = limit_unique_strings_to_500(keywords)
-    return clean_youtube_tags(limited)
+    cleaned = clean_youtube_tags(limited)
+    print(cleaned)
+    return cleaned
 
 
 # Ensures tags are in a valid format
