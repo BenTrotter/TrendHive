@@ -7,7 +7,7 @@ import tabulate
 def get_trends(pytrend):
     pytrend.build_payload(kw_list=['f'], timeframe='now 7-d', gprop='youtube')
     trending_searches_df = pytrend.trending_searches(pn='united_states')
-    print("Trending Searches on YouTube:")
+    print("\n\nTrending Searches on YouTube:\n")
     print(tabulate.tabulate(trending_searches_df, headers=['Index', 'Trend'], tablefmt='grid'))
     return trending_searches_df
 
@@ -33,10 +33,6 @@ def get_keywords(value):
     try:
         keywords = []
         suggestions_dict = pytrend.suggestions(keyword=value)
-        print("Keyword Suggestions:")
-        headers = suggestions_dict[0].keys()  # Get the headers from the dictionary keys
-        rows = [suggestion.values() for suggestion in suggestions_dict]
-        print(tabulate.tabulate(rows, headers=headers, tablefmt='grid'))
         for i in range(0, len(suggestions_dict)):
             dict = suggestions_dict[i]
             for key, values in dict.items():
@@ -44,6 +40,7 @@ def get_keywords(value):
                     keywords.append(values)
     except Exception as e:
         print(f"An error occurred while fetching keyword suggestions: {e}")
+    print(f"\nTags:\n\n{keywords}")
     return limit_unique_strings_to_500(keywords)
 
 
