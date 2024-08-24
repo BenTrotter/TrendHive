@@ -1,3 +1,4 @@
+
 from pytrends.request import TrendReq
 import tabulate
 
@@ -68,7 +69,6 @@ def display_trends():
     pytrend = TrendReq()
     get_trends(pytrend)
     
-
 
 if __name__ == "__main__":
     display_trends()

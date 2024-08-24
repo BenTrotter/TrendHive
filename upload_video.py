@@ -1,3 +1,4 @@
+
 import os
 import google.auth
 from google.auth.transport.requests import Request
@@ -6,10 +7,12 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
+
 CLIENT_SECRETS_FILE = "client_secret.json"  # Replace with your client secret file
 SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
+
 
 def get_authenticated_service():
     creds = None
@@ -25,6 +28,7 @@ def get_authenticated_service():
             token.write(creds.to_json())
     
     return build(API_SERVICE_NAME, API_VERSION, credentials=creds)
+
 
 def upload_video(youtube, video_file_path, title, description, tags):
     body = {
@@ -47,6 +51,7 @@ def upload_video(youtube, video_file_path, title, description, tags):
 
     response = insert_request.execute()
     print(f"Video uploaded. Video ID: {response['id']}\n")
+
 
 def upload_to_youtube(title, description, tags):
     print("\nUploading video to YouTube...\n")
