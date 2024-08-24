@@ -22,7 +22,7 @@ def get_prompt():
         f"and do not introduce or end of the channel as the script is for Youtube Shorts Your topic today is: {topic}"
     )
     print("\n\nTHIS IS THE PROMPT\n\n" + prompt + "\n\n")
-    return prompt
+    return topic, prompt
 
 
 def call_chat_gpt(prompt):
@@ -66,11 +66,11 @@ def extract_and_remove_description(input_string):
 
 
 def get_title_prompt_description():
-    prompt = get_prompt()
+    topic, prompt = get_prompt()
     generated_prompt = call_chat_gpt(prompt)
     title = extract_title(generated_prompt)
     generated_prompt, description = extract_and_remove_description(generated_prompt)
-    return title, generated_prompt, description
+    return topic, title, generated_prompt, description
 
 
 if __name__ == "__main__":
