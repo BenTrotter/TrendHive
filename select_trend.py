@@ -31,7 +31,7 @@ def select_trend(df):
 def get_keywords(value):
     pytrend = TrendReq()
     try:
-        keywords = []
+        keywords = ["Shorts"]
         suggestions_dict = pytrend.suggestions(keyword=value)
         for i in range(0, len(suggestions_dict)):
             dict = suggestions_dict[i]
