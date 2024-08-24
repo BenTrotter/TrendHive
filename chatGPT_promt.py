@@ -50,7 +50,7 @@ def extract_title(text):
         if end_pos == -1:
             end_pos = len(rest_of_text)
         title = rest_of_text[:end_pos].strip()
-        return title
+        return remove_surrounding_quotes(title)
     else:
         return "Title not found, please rename"
     
@@ -61,7 +61,10 @@ def extract_and_remove_description(input_string):
         return input_string, ""
     description_content = input_string[description_start + len("Description:"):].strip()
     updated_string = input_string[:description_start].strip()
-    return updated_string, description_content
+    return updated_string, remove_surrounding_quotes(description_content)
+
+def remove_surrounding_quotes(input_string):
+    return input_string.strip('\'"')
 
 
 def get_title_prompt_description(topic):
