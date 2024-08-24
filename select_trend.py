@@ -13,18 +13,21 @@ def get_trends(pytrend):
 
 
 # Select the trend you want
-def select_trend(df):
+def get_input(df):
     while True:  # Keep asking until valid input is received
         try:
-            index = int(input("Enter the index of the trend you want to select (0-4): "))
-            if 0 <= index < len(df):
-                value = df.iat[index, 0]
-                print(f"Selected Trend: {value}")
-                return value
-            else:
-                print("Please enter a number between 0 and 4.")
+            input_topic = input("Enter the index of the trend you want to select, or type your own topic: ")
+            if len(input_topic) > 2:  # Consider it as a custom topic
+                return input_topic
+            else:  # Assume it's an index
+                index = int(input_topic)
+                if 0 <= index < len(df):
+                    value = df.iat[index, 0]
+                    return value
+                else:
+                    print(f"Please enter a number between 0 and {len(df) - 1}.")
         except ValueError:
-            print("Invalid input. Please enter a number between 0 and 4.")
+            print(f"Invalid input. Please enter a number between 0 and {len(df) - 1}.")
 
 
 # Get Google Keyword Suggestions
@@ -62,10 +65,11 @@ def limit_unique_strings_to_500(strings):
 
 
 # Main method
-def display_trends():
+def display_trend_and_get_input():
     pytrend = TrendReq()
-    get_trends(pytrend)
+    df = get_trends(pytrend)
+    return get_input(df)
     
 
 if __name__ == "__main__":
-    display_trends()
+    display_trend_and_get_input()

@@ -9,7 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from process_video import rename_latest_mp4_to_video
 from upload_video import upload_to_youtube
 from chatGPT_promt import get_title_prompt_description
-from select_trend import display_trends, get_keywords
+from select_trend import display_trend_and_get_input, get_keywords
 import time
 import os
 
@@ -101,8 +101,8 @@ def create_invideo_and_download(driver, prompt):
 def main():
     driver = None
     try:
-        display_trends()
-        input, title, generated_prompt, description = get_title_prompt_description()
+        topic = display_trend_and_get_input()
+        input, title, generated_prompt, description = get_title_prompt_description(topic)
         tags = get_keywords(input)
         invideo_prompt = create_invideo_prompt(generated_prompt)
         driver = initiate_driver()

@@ -6,8 +6,7 @@ import os
 MY_API_KEY = os.getenv("CHAT_GPT_API_KEY")
 
 
-def get_prompt():
-    topic = input("\n\nPlease enter your topic: ")
+def get_prompt(topic):
     prompt = (
         f"I want you to act as a YouTube content creator, creating Youtube shorts on a broad range of "
         f"topics relating to the latest trends. I will send you a keyword that will be a "
@@ -65,8 +64,8 @@ def extract_and_remove_description(input_string):
     return updated_string, description_content
 
 
-def get_title_prompt_description():
-    topic, prompt = get_prompt()
+def get_title_prompt_description(topic):
+    topic, prompt = get_prompt(topic)
     generated_prompt = call_chat_gpt(prompt)
     title = extract_title(generated_prompt)
     generated_prompt, description = extract_and_remove_description(generated_prompt)
