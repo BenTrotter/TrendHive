@@ -8,9 +8,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from openai import OpenAI
 from datetime import datetime, timedelta
-from process_video import rename_and_move_latest_file
+from process_video import rename_latest_mp4_to_video
 from upload_video import upload_to_youtube
 import time
+import glob
 import sys
 import re
 import os
@@ -26,6 +27,15 @@ youtube_short = True
 def initiate_driver():
     print("\nInitiating driver\n")
     chrome_options = Options()
+    # Set Chrome options
+    prefs = {
+        "download.default_directory": os.getenv("TARGET_FOLDER"),  # Directory to download video
+        "download.prompt_for_download": False,  # To auto-download the file
+        "directory_upgrade": True,
+        "safebrowsing.enabled": True,  # Enable safe browsing
+        "profile.default_content_settings.popups": 0,
+    }
+    chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_argument("--disable-popup-blocking")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
     return driver
@@ -51,10 +61,13 @@ def get_prompt():
         f"topics relating to the latest trends. I will send you a keyword that will be a "
         f"recently searched trend on YouTube. I want you to find out why this is trending on the "
         f"web (so that your information is up to date) and then find out about the trend. Use what "
-        f"you find about the trend to write a script for a 2-minute video. The video should be "
+        f"you find about the trend to write a script for a 50 second video. The video should be "
         f"informative, entertaining, and catch people's attention by spiking curiosity. Please start "
         f"with a clickbait title for this video, and then provide the script. Your output should "
-        f"be a title introduced with 'Title: (YOUR TITLE)', and the script only, no sources, no special characters. No introducing or ending of the channel as the script is for Youtube Shorts Your topic today is: {topic}"
+        f"be a title introduced with 'Title: (YOUR TITLE)', then script introduced with 'Script: (YOUR SCRIPT)', "
+        f"and then a video description, introduced with 'Description: (DESCRIPTION)'. Please stick to this structure."
+        f"Do not add sources, do not add special characters, do not ask for comments below "
+        f"and do not introduce or end of the channel as the script is for Youtube Shorts Your topic today is: {topic}"
     )
     print("\n\nTHIS IS THE PROMPT\n\n" + prompt + "\n\n")
     return prompt
@@ -97,10 +110,17 @@ def extract_title(text):
     else:
         return "Title not found, please rename"  # Return a default if not found
 
-
-def get_url():
-    return "https://chatgpt.com"
-
+def extract_and_remove_description(input_string):
+    # Find the start of the description section
+    description_start = input_string.find("Description:")
+    if description_start == -1:
+        # If "Description:" is not found, return the original string and an empty description
+        return input_string, ""
+    # Extract the description content starting after "Description: "
+    description_content = input_string[description_start + len("Description:"):].strip()
+    # Remove the description from the original string
+    updated_string = input_string[:description_start].strip()
+    return updated_string, description_content
 
 def get_url(option):
     urls = {
@@ -113,6 +133,11 @@ def get_url(option):
 
 def wait_click(driver, xpath):
     wait = WebDriverWait(driver, 10)
+    button = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+    button.click()
+
+def wait_click_long(driver, xpath):
+    wait = WebDriverWait(driver, timeout=1200, poll_frequency=5)
     button = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
     button.click()
 
@@ -144,29 +169,20 @@ def login_invideo(driver):
     wait_click(driver, "//button[text()='Login']")
 
 
-def create_invideo(driver, prompt):
+def create_invideo_prompt(chatgpt_script):
+    invideo_prompt = "Create a fun and viral Youtube short that is 50 seconds long. Here is the script and title:\n\n"
+    return invideo_prompt + chatgpt_script
+
+def create_invideo_and_download(driver, prompt):
     enter_text(driver, "//textarea[@name='brief']", prompt)
     wait_click(driver, "//div[text()='Generate a video']")
-    wait = 2
-    print(f"\nWaiting for {str(wait)} minutes for InVideo to analyse...\n")
-    time.sleep(60*wait)
     if(youtube_short):
-        wait_click(driver, "//button//div[text()='YouTube shorts']")
+        wait_click_long(driver, "//button//div[text()='YouTube shorts']")
         wait_click(driver, "//div[text()='Continue']")
     else:
-        wait_click(driver, "//div[text()='Continue']")
-
-
-def download_invideo():
-    return "" # Needs implementing
-
-
-def rename_and_move_video_from_downloads():
-    downloads_folder = os.path.expanduser("~/Downloads")
-    target_folder = os.getenv("TARGET_FOLDER") 
-    new_filename = "video.mp4"
-    rename_and_move_latest_file(downloads_folder, target_folder, new_filename)
-
+        wait_click_long(driver, "//div[text()='Continue']")
+    wait_click_long(driver, "//div[text()='Download']")
+    wait_click_long(driver, "//p[text()='Continue']")
 
 
 def main():
@@ -177,16 +193,17 @@ def main():
         prompt = get_prompt()
         generated_prompt = call_chat_gpt(prompt)
         title = extract_title(generated_prompt)
-        # driver = initiate_driver()
-        # open_page(driver, "InVideo")
-        # login_invideo(driver)
-        # create_invideo(driver, generated_prompt)
-        # print("\n\nWe have not implemented downloading yet, please go and download video to your downloads folder once video has been created. The next process will start in 20 minutes.\n\n")
-        # time.sleep(60*12) # Waiting for InVideo to generate video, this should be fine tuned / improved by waiting
-        # download_invideo() # Currently not implemented, this step will need to be done manually
-        # time.sleep(60*3) # Waiting for download
-        # rename_and_move_video_from_downloads()
-        # upload_to_youtube(title, "descripition")
+        generated_prompt, description = extract_and_remove_description(generated_prompt)
+        invideo_prompt = create_invideo_prompt(generated_prompt)
+        driver = initiate_driver()
+        open_page(driver, "InVideo")
+        login_invideo(driver)
+        create_invideo_and_download(driver, invideo_prompt)
+        print("\nWaiting 2 minutes for download\n")
+        time.sleep(60*2) # Waiting for download
+        rename_latest_mp4_to_video()
+        time.sleep(10)
+        upload_to_youtube(title, description)
         
     except Exception as error:
         print(error)
