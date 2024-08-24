@@ -1,6 +1,7 @@
 from pytrends.request import TrendReq
 import tabulate
 
+
 # Get Google Hot Trends data
 def get_trends(pytrend):
     pytrend.build_payload(kw_list=['f'], timeframe='now 7-d', gprop='youtube')
@@ -8,6 +9,7 @@ def get_trends(pytrend):
     print("Trending Searches on YouTube:")
     print(tabulate.tabulate(trending_searches_df, headers=['Index', 'Trend'], tablefmt='grid'))
     return trending_searches_df
+
 
 # Select the trend you want
 def select_trend(df):
@@ -23,8 +25,10 @@ def select_trend(df):
         except ValueError:
             print("Invalid input. Please enter a number between 0 and 4.")
 
+
 # Get Google Keyword Suggestions
-def get_keywords(pytrend, value):
+def get_keywords(value):
+    pytrend = TrendReq()
     try:
         keywords = []
         suggestions_dict = pytrend.suggestions(keyword=value)
@@ -40,6 +44,7 @@ def get_keywords(pytrend, value):
     except Exception as e:
         print(f"An error occurred while fetching keyword suggestions: {e}")
     return limit_unique_strings_to_500(keywords)
+
 
 # Limit keywords length and ensure no duplicates
 def limit_unique_strings_to_500(strings):
@@ -58,12 +63,12 @@ def limit_unique_strings_to_500(strings):
     return result
 
 
-def display_select_trend():
+# Main method
+def display_trends():
     pytrend = TrendReq()
-    trends_df = get_trends(pytrend)
-    selected_trend = select_trend(trends_df)
-    keywords = get_keywords(pytrend, selected_trend)
-    print("Keywords: \n", keywords)
+    get_trends(pytrend)
+    
+
 
 if __name__ == "__main__":
-    display_select_trend()
+    display_trends()

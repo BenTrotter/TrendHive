@@ -48,13 +48,13 @@ def upload_video(youtube, video_file_path, title, description, tags):
     response = insert_request.execute()
     print(f"Video uploaded. Video ID: {response['id']}\n")
 
-def upload_to_youtube(title, description):
+def upload_to_youtube(title, description, tags):
     print("\nUploading video to YouTube...\n")
     youtube = get_authenticated_service()
     
     video_file_path = 'video.mp4'
     title = title
     description = description
-    tags = ['shorts', 'tag2', 'tag3']
+    tags = tags
 
     upload_video(youtube, video_file_path, title, description, tags)
