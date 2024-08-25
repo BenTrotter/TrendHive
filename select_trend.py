@@ -63,7 +63,7 @@ def clean_youtube_tags(tags):
         if len(tag) > 500:
             tag = tag[:500]
         # Remove invalid characters (YouTube allows alphanumeric and some special characters)
-        tag = re.sub(r'[^a-zA-Z0-9\s-_]', '', tag)
+        tag = re.sub(r'[^a-zA-Z0-9\s_-]', '', tag)  # Hyphen moved to the end of the character class
         # Add cleaned tag to the list if it's not already present
         if tag not in cleaned_tags:
             cleaned_tags.append(tag)
